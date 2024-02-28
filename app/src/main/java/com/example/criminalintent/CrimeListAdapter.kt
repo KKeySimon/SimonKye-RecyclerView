@@ -29,10 +29,9 @@ class CrimeHolder(
 class SeriousCrimeHolder(
     private val binding: ListItemSeriousCrimeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(crime: SeriousCrime) {
+    fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
         binding.crimeDate.text = crime.date.toString()
-        binding.numPeopleHarmed.text = crime.numPeopleHarmed
 
         binding.root.setOnClickListener {
             Toast.makeText(
@@ -48,7 +47,7 @@ enum class CrimeType(val value: Int) {
     CRIME(1), SERIOUS_CRIME(2)
 }
 
-class CrimeListAdapter(private val crimes: List<AbstractCrime>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CrimeListAdapter(private val crimes: List<Crime>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var bindingCrimes: ListItemCrimeBinding
     private lateinit var bindingSeriousCrimes: ListItemSeriousCrimeBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -75,29 +74,25 @@ class CrimeListAdapter(private val crimes: List<AbstractCrime>) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (crimes[position]) {
-            is Crime -> {
-                (holder as CrimeHolder).bind(crimes[position] as Crime)
+        val currentCrime = crimes[position]
+        when (holder) {
+            is CrimeHolder -> {
+                holder.bind(currentCrime)
             }
-            is SeriousCrime -> {
-                (holder as SeriousCrimeHolder).bind(crimes[position] as SeriousCrime)
+            is SeriousCrimeHolder -> {
+                holder.bind(currentCrime)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (crimes[position]) {
-            is Crime -> {
-                CrimeType.CRIME.value
-            }
-            is SeriousCrime -> {
-                CrimeType.SERIOUS_CRIME.value
-            }
-            else -> {
-                CrimeType.SERIOUS_CRIME.value
-            }
+        return if (crimes[position].requiresPolice) {
+            CrimeType.SERIOUS_CRIME.value
+        } else {
+            CrimeType.CRIME.value
         }
     }
+
 
     override fun getItemCount(): Int {
         return crimes.size

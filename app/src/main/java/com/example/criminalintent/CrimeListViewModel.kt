@@ -5,25 +5,26 @@ import java.util.Date
 import java.util.UUID
 
 class CrimeListViewModel : ViewModel() {
-    val crimes = mutableListOf<AbstractCrime>()
+    val crimes = mutableListOf<Crime>()
 
     init {
         for (i in 0 until 100) {
-            val crime : AbstractCrime
+            val crime : Crime
             if (i % 2 == 0) {
                 crime = Crime(
                     id = UUID.randomUUID(),
                     title = "Crime #$i",
                     date = Date(),
-                    isSolved = i % 2 == 0
+                    isSolved = i % 2 == 0,
+                    requiresPolice = false
                 )
             } else {
-                crime = SeriousCrime(
+                crime = Crime(
                     id = UUID.randomUUID(),
                     title = "SERIOUS Crime #$i",
-                    numPeopleHarmed = "$i People Harmed!",
                     date = Date(),
-                    isSolved = i % 2 == 0
+                    isSolved = i % 2 == 0,
+                    requiresPolice = true
                 )
             }
             crimes += crime

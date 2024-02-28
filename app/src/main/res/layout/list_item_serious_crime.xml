@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
     <TextView
-        android:id="@+id/num_people_harmed"
+        android:id="@+id/requires_police"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/people_harmed"
-        android:textSize="30sp"/>
+        android:text="@string/requires_police"
+        android:textSize="20sp"/>
     <TextView
         android:id="@+id/crime_title"
         android:layout_width="match_parent"
